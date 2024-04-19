@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="pnLogout" prefHeight="308.0" prefWidth="349.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.login.HelloController">
+   <children>
+      <Button id="btnLogout" layoutX="145.0" layoutY="142.0" mnemonicParsing="false" onAction="#onLogout" text="Log Out" />
+      <Button layoutX="28.0" layoutY="23.0" mnemonicParsing="false" text="Button" />
+   </children>
+</AnchorPane>
