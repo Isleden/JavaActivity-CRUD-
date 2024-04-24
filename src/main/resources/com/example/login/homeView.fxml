@@ -6,19 +6,15 @@
 
 <AnchorPane fx:id="pnLogout" prefHeight="308.0" prefWidth="349.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.login.HelloController">
    <children>
-      <Button id="btnLogout" layoutX="145.0" layoutY="268.0" mnemonicParsing="false" onAction="#onLogout" text="Log Out" />
-      <Label layoutX="79.0" layoutY="14.0" text="Update Details">
+      <Label layoutX="63.0" layoutY="14.0" text="Update Details">
          <font>
-            <Font name="Bodoni MT" size="30.0" />
+            <Font name="Bodoni MT Black" size="30.0" />
          </font>
       </Label>
       <Label layoutX="51.0" layoutY="89.0" text="New Username:" />
       <Label layoutX="51.0" layoutY="146.0" text="New Password:" />
       <PasswordField fx:id="updatePassword" layoutX="144.0" layoutY="142.0" />
       <TextField fx:id="updateUsername" layoutX="145.0" layoutY="85.0" />
-      <Button layoutX="146.0" layoutY="201.0" mnemonicParsing="false" onAction="#updateDetails" text="Update" />
-      <Button layoutX="54.0" layoutY="201.0" mnemonicParsing="false" text="Delete" />
-      <Label layoutX="32.0" layoutY="227.0" text="(Current Account)" />
-      <Button layoutX="242.0" layoutY="201.0" mnemonicParsing="false" text="View" />
+      <Button layoutX="144.0" layoutY="194.0" mnemonicParsing="false" onAction="#updateDetails" prefHeight="26.0" prefWidth="150.0" text="Update" />
    </children>
 </AnchorPane>

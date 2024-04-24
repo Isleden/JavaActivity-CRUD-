@@ -24,10 +24,11 @@ public class HelloController {
     public Button btnLogout;
     public VBox pnLogin;
     private Label welcomeText;
-    public Pane pnLogout;
+    @FXML
+    public Pane pnLogout,pnMainMenu;
     public ColorPicker cpPicker;
     public Pane pnRegisterForm;
-
+    public Pane pnDeletePage;
     public Pane pnStartup;
 
     public PasswordField registerPass,logPass,updatePassword;
@@ -72,7 +73,7 @@ public class HelloController {
         if (isValidCredentials) {
             p = (AnchorPane) pnLogin.getParent();
             p.getScene().getStylesheets().clear();
-            Parent scene = FXMLLoader.load(getClass().getResource("homeView.fxml"));
+            Parent scene = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
             scene.prefHeight(p.getScene().getHeight());
             scene.prefWidth(p.getScene().getWidth());
             p.getChildren().clear();
@@ -101,10 +102,19 @@ public class HelloController {
     }
 
     public void onLogout(ActionEvent actionEvent) throws IOException{
-        AnchorPane p = (AnchorPane) pnLogout.getParent();
-        Parent scene = FXMLLoader.load(getClass().getResource("hello-view.fxml"));
-        p.getChildren().clear();
-        p.getChildren().add(scene);
+        if(pnLogout != null) {
+            AnchorPane p = (AnchorPane) pnLogout.getParent();
+            Parent scene = FXMLLoader.load(getClass().getResource("hello-view.fxml"));
+            p.getChildren().clear();
+            p.getChildren().add(scene);
+        }
+        else if(pnMainMenu != null)
+        {
+            AnchorPane p = (AnchorPane) pnMainMenu.getParent();
+            Parent scene = FXMLLoader.load(getClass().getResource("hello-view.fxml"));
+            p.getChildren().clear();
+            p.getChildren().add(scene);
+        }
     }
 
     public void registerAccount() throws IOException {
@@ -145,8 +155,65 @@ public class HelloController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
     }
 
+    public void redirectToUpdate(ActionEvent actionEvent) throws IOException
+    {
+
+        if (pnMainMenu != null) {
+            AnchorPane p = (AnchorPane) pnMainMenu.getParent();
+            Parent scene = FXMLLoader.load(getClass().getResource("homeView.fxml"));
+            p.getChildren().clear();
+            p.getChildren().add(scene);
+        }
+    }
+
+    public void redirectToDelete(ActionEvent actionEvent) throws IOException
+    {
+//        AnchorPane p = (AnchorPane) pnMainMenu.getParent();
+//        Parent scene = FXMLLoader.load(getClass().getResource("homeView.fxml"));
+//        p.getChildren().clear();
+//        p.getChildren().add(scene);
+
+        if (pnMainMenu != null) {
+            AnchorPane p = (AnchorPane) pnMainMenu.getParent();
+            Parent scene = FXMLLoader.load(getClass().getResource("deleteconfirmation.fxml"));
+            p.getChildren().clear();
+            p.getChildren().add(scene);
+        }
+    }
+
+    public void deleteAccAffirmative() throws IOException {
+        AnchorPane p = (AnchorPane) pnDeletePage.getParent();
+        try(Connection c = MySQLConnection.getConnection();
+            PreparedStatement statement = c.prepareStatement(
+                    "DELETE FROM users WHERE id=? RETURNING *"
+            )){
+            int id = user.getId();
+            statement.setInt(1,id);
+            int rows = statement.executeUpdate();
+            ResultSet res = statement.getResultSet();
+            if(res.next()){
+                System.out.println("User successfully deleted!");
+                System.out.println("Name: " + res.getString("name"));
+                System.out.println("Password: "+ res.getString("password"));
+            }
+            System.out.println("Rows Deleted: " + rows);
+
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        Parent scene = FXMLLoader.load(getClass().getResource("hello-view.fxml"));
+        p.getChildren().clear();
+        p.getChildren().add(scene);
+    }
+
+    public void deleteAccNegative(ActionEvent actionEvent) throws IOException
+    {
+            AnchorPane p = (AnchorPane) pnDeletePage.getParent();
+            Parent scene = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
+            p.getChildren().clear();
+            p.getChildren().add(scene);
+    }
 }
