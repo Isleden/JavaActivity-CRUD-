@@ -9,10 +9,7 @@ public class RegisterView {
     public Label registerName;
 
     public PasswordField registerPass;
-    public String RegisterName()
-    {
-        return
-    }
+
     public static void main(String[] args)
     {
         try(Connection c = MySQLConnection.getConnection();

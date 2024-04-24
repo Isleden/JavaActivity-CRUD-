@@ -4,7 +4,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MySQLConnection {
-    public static final String URL ="jdbc:mysql://localhost:3306/cabreradb";
+    public static final String URL ="jdbc:mysql://localhost:3306/cabreraUsersdb";
     public static final String USERNAME = "root";
     public static final String PASSWORD = "";
     static Connection getConnection()

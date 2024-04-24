@@ -20,7 +20,7 @@
 <!--   </children>-->
 <!--</GridPane>-->
 
-<AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.login.HelloController">
+<AnchorPane fx:id="pnStartup" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.login.HelloController">
     <children>
         <VBox fx:id="pnLogin" alignment="CENTER" spacing="20.0" style="-fx-background-color: white;">
             <padding>

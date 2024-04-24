@@ -27,12 +27,21 @@ public class HelloController {
     public ColorPicker cpPicker;
     public Pane pnRegisterForm;
 
+    public Pane pnStartup;
     @FXML
     protected void onHelloButtonClick() throws IOException {
         AnchorPane p = (AnchorPane) pnLogin.getParent();
         p.getScene().getStylesheets().clear();
 //        p.getScene().getStylesheets().add(getClass().getResource("userStyle.css").toExternalForm());
         Parent scene = FXMLLoader.load(getClass().getResource("homeView.fxml"));
+        p.getChildren().clear();
+        p.getChildren().add(scene);
+    }
+    public void onRegisterViewButtonClick() throws IOException {
+        AnchorPane p = (AnchorPane) pnLogin.getParent();
+        p.getScene().getStylesheets().clear();
+//        Parent scene = FXMLLoader.load(getClass().getResource("register-view.fxml"));
+        Parent scene = FXMLLoader.load(getClass().getResource("register-view.fxml"));
         p.getChildren().clear();
         p.getChildren().add(scene);
     }
@@ -44,11 +53,5 @@ public class HelloController {
         p.getChildren().add(scene);
     }
 
-    public void onRegisterViewButtonClick() throws IOException {
-        AnchorPane p = (AnchorPane) pnLogin.getParent();
-        p.getScene().getStylesheets().clear();
-        Parent scene = FXMLLoader.load(getClass().getResource("register-view.fxml"));
-        p.getChildren().clear();
-        p.getChildren().add(scene);
-    }
+
 }
