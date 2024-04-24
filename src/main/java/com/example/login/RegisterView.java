@@ -1,15 +1,16 @@
 package com.example.login;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 public class RegisterView {
-    public Label registerName;
+//    public Label registerName;
 
     public PasswordField registerPass;
-
+    public TextField registerName;
     public static void main(String[] args)
     {
         try(Connection c = MySQLConnection.getConnection();
