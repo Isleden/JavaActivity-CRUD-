@@ -3,11 +3,13 @@ package com.example.login;
 import java.sql.*;
 
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -18,6 +20,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HelloController {
 
@@ -25,14 +29,14 @@ public class HelloController {
     public VBox pnLogin;
     private Label welcomeText;
     @FXML
-    public Pane pnLogout,pnMainMenu;
+    public Pane pnLogout,pnMainMenu,pnRegisterForm,pnDeletePage,pnStartUp,pnAccView,pnRegisterShowForm,pnShowMainMenu,pnShowUpdate;
     public ColorPicker cpPicker;
-    public Pane pnRegisterForm;
-    public Pane pnDeletePage;
-    public Pane pnStartup;
+//    public Pane pnRegisterForm;
+//    public Pane pnDeletePage;
+//    public Pane pnStartup;
 
     public PasswordField registerPass,logPass,updatePassword;
-    public TextField registerName,logName,updateUsername;
+    public TextField registerName,logName,updateUsername,showName,showStatus,showSeasons,txtShowID,updateShowName,updateShowStatus,updateShowNumOfSeasons;
 
     public static User user;
     @FXML
@@ -115,6 +119,13 @@ public class HelloController {
             p.getChildren().clear();
             p.getChildren().add(scene);
         }
+        else if(pnShowMainMenu != null)
+        {
+            AnchorPane p = (AnchorPane) pnShowMainMenu.getParent();
+            Parent scene = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
+            p.getChildren().clear();
+            p.getChildren().add(scene);
+        }
     }
 
     public void registerAccount() throws IOException {
@@ -156,7 +167,12 @@ public class HelloController {
             e.printStackTrace();
         }
     }
-
+    public void returnToMainMenu(ActionEvent actionEvent) throws IOException{
+        AnchorPane p = (AnchorPane) pnLogout.getParent();
+        Parent scene = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
+        p.getChildren().clear();
+        p.getChildren().add(scene);
+    }
     public void redirectToUpdate(ActionEvent actionEvent) throws IOException
     {
 
@@ -216,4 +232,179 @@ public class HelloController {
             p.getChildren().clear();
             p.getChildren().add(scene);
     }
+    @FXML
+    public void viewAccounts() throws IOException {
+        AnchorPane p = (AnchorPane) pnMainMenu.getParent();
+        Parent scene = FXMLLoader.load(getClass().getResource("viewAcc.fxml"));
+        p.getChildren().clear();
+        p.getChildren().add(scene);
+
+        try (Connection c = MySQLConnection.getConnection();
+             Statement statement = c.createStatement()) {
+            String query = "SELECT * FROM users";
+            ResultSet res = statement.executeQuery(query);
+
+
+            List<User> userList = new ArrayList<>();
+
+            while (res.next()) {
+                int id = res.getInt("id");
+                String name = res.getString("name");
+                String password = res.getString("password");
+
+
+                userList.add(new User(name, password,id));
+            }
+
+            TableView<User> userTableView = new TableView<>();
+
+            TableColumn<User, Integer> idColumn = new TableColumn<>("ID");
+            idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+            idColumn.setPrefWidth(100);
+
+            TableColumn<User, String> nameColumn = new TableColumn<>("Username");
+            nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+            nameColumn.setPrefWidth(100);
+
+            TableColumn<User, String> passwordColumn = new TableColumn<>("Password");
+            passwordColumn.setCellValueFactory(new PropertyValueFactory<>("password"));
+            passwordColumn.setPrefWidth(100);
+
+
+            userTableView.getColumns().addAll(idColumn, nameColumn, passwordColumn);
+            userTableView.setItems(FXCollections.observableArrayList(userList));
+
+
+            userTableView.setPrefWidth(300);
+
+            p.getChildren().add(userTableView);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void viewToMain(ActionEvent actionEvent) throws IOException
+    {
+        AnchorPane p = (AnchorPane) pnAccView.getParent();
+        Parent scene = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
+        p.getChildren().clear();
+        p.getChildren().add(scene);
+    }
+
+    public void toAddFavShow() throws IOException
+    {
+
+        AnchorPane p = (AnchorPane) pnMainMenu.getParent();
+        try (Connection c = MySQLConnection.getConnection();
+             PreparedStatement statement = c.prepareStatement("CREATE TABLE IF NOT EXISTS tblFavoriteShow (" +
+                     "showid INT AUTO_INCREMENT PRIMARY KEY," +
+                     "id INT NOT NULL," +
+                     "FOREIGN KEY (id) REFERENCES users(id)," +
+                     "showname VARCHAR(100) NOT NULL," +
+                     "status VARCHAR(100) NOT NULL," +
+                     "numOfSeasons INT NOT NULL" +
+                     ")")) {
+            statement.execute();
+            System.out.println("2nd Table created successfully!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        Parent scene = FXMLLoader.load(getClass().getResource("registerShow.fxml"));
+        p.getChildren().clear();
+        p.getChildren().add(scene);
+    }
+
+    public void registerShow() throws IOException
+    {
+        String rShowName = showName.getText();
+        String rShowStatus = showStatus.getText();
+        int rShowSeasons = Integer.parseInt(showSeasons.getText());
+
+        int userId = user.getId();
+
+        try (Connection connection = MySQLConnection.getConnection()) {
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO tblfavoriteshow (id, showname, status, numOfSeasons) VALUES (?, ?, ?, ?)")) {
+
+                statement.setInt(1, userId);
+                statement.setString(2, rShowName);
+                statement.setString(3, rShowStatus);
+                statement.setInt(4, rShowSeasons);
+                int rows = statement.executeUpdate();
+
+                if (rows > 0) {
+                    System.out.println("Rows inserted: " + rows);
+                    System.out.println("User's favorite show added!");
+                }
+
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                throw new RuntimeException("Transaction failed.", e);
+            } finally {
+                connection.setAutoCommit(true);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Database connection error.", e);
+        }
+        AnchorPane p = (AnchorPane) pnRegisterShowForm.getParent();
+        Parent scene = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
+        p.getChildren().clear();
+        p.getChildren().add(scene);
+    }
+    public void redirectToShowUpdate(ActionEvent actionEvent) throws IOException
+    {
+
+        if (pnShowMainMenu != null) {
+            AnchorPane p = (AnchorPane) pnShowMainMenu.getParent();
+            Parent scene = FXMLLoader.load(getClass().getResource("showUpdate.fxml"));
+            p.getChildren().clear();
+            p.getChildren().add(scene);
+        }
+    }
+
+    public void switchMainMenu(ActionEvent actionEvent) throws IOException{
+        AnchorPane p = (AnchorPane) pnMainMenu.getParent();
+        Parent scene = FXMLLoader.load(getClass().getResource("showMainMenu.fxml"));
+        p.getChildren().clear();
+        p.getChildren().add(scene);
+    }
+
+    public void redirectShowUpdate(ActionEvent actionEvent) throws IOException{
+        AnchorPane p = (AnchorPane) pnShowMainMenu.getParent();
+        Parent scene = FXMLLoader.load(getClass().getResource("showUpdate.fxml"));
+        p.getChildren().clear();
+        p.getChildren().add(scene);
+    }
+
+    public void onUpdateShow() {
+        int showID = Integer.parseInt(txtShowID.getText());
+        String newShowName = updateShowName.getText();
+        String newShowStatus = updateShowStatus.getText();
+        int newNumOfSeasons = Integer.parseInt(updateShowNumOfSeasons.getText());
+        UpdateData updateData = new UpdateData();
+        try {
+            updateData.updateShowDetails(showID, newShowName,newShowStatus,newNumOfSeasons);
+            System.out.println("Show details updated!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void returnToShowMainMenu(ActionEvent actionEvent) throws IOException{
+        AnchorPane p = (AnchorPane) pnShowUpdate.getParent();
+        Parent scene = FXMLLoader.load(getClass().getResource("showMainMenu.fxml"));
+        p.getChildren().clear();
+        p.getChildren().add(scene);
+    }
+
+    public void switchBackMainMenu(ActionEvent actionEvent) throws IOException{
+        AnchorPane p = (AnchorPane) pnShowMainMenu.getParent();
+        Parent scene = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
+        p.getChildren().clear();
+        p.getChildren().add(scene);
+    }
+
 }

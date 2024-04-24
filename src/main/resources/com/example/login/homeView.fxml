@@ -16,5 +16,6 @@
       <PasswordField fx:id="updatePassword" layoutX="144.0" layoutY="142.0" />
       <TextField fx:id="updateUsername" layoutX="145.0" layoutY="85.0" />
       <Button layoutX="144.0" layoutY="194.0" mnemonicParsing="false" onAction="#updateDetails" prefHeight="26.0" prefWidth="150.0" text="Update" />
+      <Button layoutX="51.0" layoutY="195.0" mnemonicParsing="false" onAction="#returnToMainMenu" text="[&lt;--]" />
    </children>
 </AnchorPane>

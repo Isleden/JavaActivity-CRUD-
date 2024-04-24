@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="pnShowUpdate" prefHeight="308.0" prefWidth="349.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.login.HelloController">
+    <children>
+        <Label layoutX="63.0" layoutY="14.0" text="Update Details">
+            <font>
+                <Font name="Bodoni MT Black" size="30.0" />
+            </font>
+        </Label>
+        <Label layoutX="48.0" layoutY="132.0" text="New show name:" />
+        <Label layoutX="48.0" layoutY="168.0" text="New status:" />
+        <TextField fx:id="updateShowName" layoutX="145.0" layoutY="128.0" />
+        <Button layoutX="143.0" layoutY="258.0" mnemonicParsing="false" onAction="#onUpdateShow" prefHeight="26.0" prefWidth="150.0" text="Update" />
+      <TextField fx:id="updateShowStatus" layoutX="145.0" layoutY="164.0" />
+      <Label layoutX="48.0" layoutY="214.0" text="New # of seasons:" />
+      <TextField fx:id="updateShowNumOfSeasons" layoutX="144.0" layoutY="210.0" />
+      <Label layoutX="48.0" layoutY="98.0" text="Show ID" />
+      <TextField fx:id="txtShowID" layoutX="144.0" layoutY="94.0" />
+      <Button layoutX="44.0" layoutY="259.0" mnemonicParsing="false" onAction="#returnToShowMainMenu" text="[&lt;--]" />
+    </children>
+</AnchorPane>
