@@ -4,6 +4,7 @@ import java.sql.*;
 
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,16 +30,17 @@ public class HelloController {
     public VBox pnLogin;
     private Label welcomeText;
     @FXML
-    public Pane pnLogout,pnMainMenu,pnRegisterForm,pnDeletePage,pnStartUp,pnAccView,pnRegisterShowForm,pnShowMainMenu,pnShowUpdate;
+    public Pane pnLogout,pnMainMenu,pnRegisterForm,pnDeletePage,pnStartUp,pnAccView,pnRegisterShowForm,pnShowMainMenu,pnShowUpdate,pnShowDeletePage;
     public ColorPicker cpPicker;
 //    public Pane pnRegisterForm;
 //    public Pane pnDeletePage;
 //    public Pane pnStartup;
 
     public PasswordField registerPass,logPass,updatePassword;
-    public TextField registerName,logName,updateUsername,showName,showStatus,showSeasons,txtShowID,updateShowName,updateShowStatus,updateShowNumOfSeasons;
+    public TextField registerName,logName,updateUsername,showName,showStatus,showSeasons,txtShowID,updateShowName,updateShowStatus,updateShowNumOfSeasons,showNameToDelete;
 
     public static User user;
+    public static Show show;
     @FXML
     protected void onHelloButtonClick() throws IOException {
 //        AnchorPane p = (AnchorPane) pnLogin.getParent();
@@ -406,5 +408,72 @@ public class HelloController {
         p.getChildren().clear();
         p.getChildren().add(scene);
     }
+
+    public void redirectToShowDelete(ActionEvent actionEvent) throws IOException
+    {
+//        AnchorPane p = (AnchorPane) pnMainMenu.getParent();
+//        Parent scene = FXMLLoader.load(getClass().getResource("homeView.fxml"));
+//        p.getChildren().clear();
+//        p.getChildren().add(scene);
+
+        if (pnShowMainMenu != null) {
+            AnchorPane p = (AnchorPane) pnShowMainMenu.getParent();
+            Parent scene = FXMLLoader.load(getClass().getResource("deleteShowConfirmation.fxml"));
+            p.getChildren().clear();
+            p.getChildren().add(scene);
+        }
+    }
+
+    public void deleteShowAffirmative() throws IOException {
+        AnchorPane p = (AnchorPane) pnShowDeletePage.getParent();
+        Parent scene = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
+        p.getChildren().clear();
+        p.getChildren().add(scene);
+//        try(Connection c = MySQLConnection.getConnection();
+//            PreparedStatement statement = c.prepareStatement(
+//                    "DELETE FROM tblfavoriteshow WHERE id=? RETURNING *"
+//            )){
+//            int id = user.getId();
+//            statement.setInt(1,id);
+//            int rows = statement.executeUpdate();
+//            ResultSet res = statement.getResultSet();
+//            if(res.next()){
+//                System.out.println("User successfully deleted!");
+//                System.out.println("Name: " + res.getString("name"));
+//                System.out.println("Password: "+ res.getString("password"));
+//            }
+//            System.out.println("Rows Deleted: " + rows);
+//        }catch (SQLException e){
+//            e.printStackTrace();
+//        }
+        String showRemove = showNameToDelete.getText();
+
+        try (Connection c = MySQLConnection.getConnection();
+             PreparedStatement statement = c.prepareStatement(
+                     "DELETE FROM tblfavoriteshow WHERE showname = ? AND id = ? RETURNING *")) {
+            statement.setString(1, showRemove);
+            statement.setInt(2, user.getId());
+
+            int rows = statement.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Show deleted!");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public void deleteShowNegative(ActionEvent actionEvent) throws IOException
+    {
+        AnchorPane p = (AnchorPane) pnShowDeletePage.getParent();
+        Parent scene = FXMLLoader.load(getClass().getResource("showMainMenu.fxml"));
+        p.getChildren().clear();
+        p.getChildren().add(scene);
+    }
+
 
 }

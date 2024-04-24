@@ -6,19 +6,19 @@
 
 <AnchorPane fx:id="pnShowMainMenu" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.login.HelloController">
     <children>
-        <Label layoutX="14.0" layoutY="63.0" text="Modify your favorite show here" />
+        <Label layoutX="14.0" layoutY="63.0" text="Modify your favorite show here!" />
         <Button layoutX="11.0" layoutY="172.0" mnemonicParsing="false" onAction="#redirectShowUpdate" prefHeight="26.0" prefWidth="59.0" text="Update" />
         <Button layoutX="11.0" layoutY="137.0" mnemonicParsing="false" onAction="#viewAccounts" prefHeight="26.0" prefWidth="59.0" text="View" />
-        <Button layoutX="11.0" layoutY="207.0" mnemonicParsing="false" onAction="#redirectToDelete" prefHeight="26.0" prefWidth="59.0" text="Delete" />
+        <Button layoutX="11.0" layoutY="207.0" mnemonicParsing="false" onAction="#redirectToShowDelete" prefHeight="26.0" prefWidth="59.0" text="Delete" />
         <Button layoutX="14.0" layoutY="298.0" mnemonicParsing="false" onAction="#onLogout" prefHeight="26.0" prefWidth="135.0" text="Log Out" />
         <Label layoutX="108.0" layoutY="176.0" text="Update user's show details" />
         <Label layoutX="108.0" layoutY="141.0" text="View different users' favorite shows" />
         <Label layoutX="111.0" layoutY="211.0" text="Permanently delete user's show" />
-        <Button layoutX="12.0" layoutY="242.0" mnemonicParsing="false" onDragDetected="#switchBackMainMenu" prefHeight="26.0" prefWidth="59.0" text="Switch" />
+        <Button layoutX="12.0" layoutY="242.0" mnemonicParsing="false" onAction="#switchBackMainMenu" prefHeight="26.0" prefWidth="59.0" text="Switch" />
         <Label layoutX="108.0" layoutY="247.0" text="Switches back to main menu" />
       <Label layoutX="11.0" layoutY="14.0" text="Main Menu">
          <font>
-            <Font name="Bodoni MT Black" size="35.0" />
+            <Font name="Bodoni MT Black" size="40.0" />
          </font></Label>
     </children>
 </AnchorPane>

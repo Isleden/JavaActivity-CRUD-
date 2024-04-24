@@ -1,6 +1,7 @@
 package com.example.login;
 
 public class Show {
+
     private String showName;
     private String status;
     private int numOfSeasons;
@@ -10,6 +11,7 @@ public class Show {
         this.showName = showName;
         this.status = status;
         this.numOfSeasons = numOfSeasons;
+
     }
 
     public String getShowName()
@@ -41,4 +43,5 @@ public class Show {
     {
         this.numOfSeasons = numOfSeasons;
     }
+
 }
